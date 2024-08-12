@@ -1,5 +1,6 @@
 import java.awt.BorderLayout;
 import java.awt.Button;
+import java.awt.Color;
 import java.awt.Dialog;
 import java.awt.Frame;
 import java.awt.GridLayout;
@@ -10,9 +11,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.LinkedList;
 
 import mypkg.Util;
+
 
 class Book
 {
@@ -362,3 +366,109 @@ class BDel extends Dialog implements FocusListener , ActionListener
         }    
     }
 }
+class BDisplay extends Dialog implements ActionListener {
+    int i, n;
+    LinkedList<Book> ls;
+    Label l1, l2, l3, l4;
+    TextField t1, t2, t3, t4;
+    Button b1, b2, b3, b4;
+
+    BDisplay(Frame f, String t, LinkedList<Book> ls, boolean state) {
+        super(f, t, state);
+        i = 0;
+        this.ls = ls;
+
+        l1 = new Label("Book No.");
+        l2 = new Label("Name");
+        l3 = new Label("Price");
+        l4 = new Label("State");
+
+        t1 = new TextField(10);
+        t2 = new TextField(40);
+        t3 = new TextField(10);
+        t4 = new TextField(10);
+
+        t1.setEditable(false);
+        t2.setEditable(false);
+        t3.setEditable(false);
+        t4.setEditable(false);
+
+        b1 = new Button("|<");
+        b2 = new Button("<<");
+        b3 = new Button(">>");
+        b4 = new Button(">|");
+        b1.addActionListener(this);
+        b2.addActionListener(this);
+        b3.addActionListener(this);
+        b4.addActionListener(this);
+
+        Panel p1 = new Panel();
+        p1.setLayout(new GridLayout(4, 2, 5, 5));
+        p1.add(l1);
+        p1.add(t1);
+        p1.add(l2);
+        p1.add(t2);
+        p1.add(l3);
+        p1.add(t3);
+        p1.add(l4);
+        p1.add(t4);
+
+        Panel p2 = new Panel();
+        p2.add(b1);
+        p2.add(b2);
+        p2.add(b3);
+        p2.add(b4);
+        add(p1, BorderLayout.CENTER);
+        add(p2, BorderLayout.SOUTH);
+
+        addWindowListener(new WindowAdapter() {
+            public void WindowClosing(WindowEvent e) {
+                System.exit(0);
+            }
+        });
+
+        setSize(400, 300);
+        setVisible(true);
+    }
+
+    public void actionPerformed(ActionEvent e )
+    {
+        Button b = (Button)e.getSource();
+        n = ls.size();
+        if(b == b1)
+            i = 0;
+        if(b == b4)
+            i = n - 1;
+        if(b == b2)
+        {
+            if(--i < 0)
+                i = 0;
+        }
+        if(b == b3)
+        {
+            if(++i >= n)
+                i = n -1;
+        }
+        Book obj = ls.get(i);
+
+        t1.setText(" "+ obj.bno);
+        t1.setText(" "+ obj.bnm);
+        t1.setText(" "+ obj.bprice);
+
+        if(obj.bstate == false)
+            t4.setForeground(Color.RED);
+        else
+            t4.setForeground(Color.BLACK);
+        t4.setText(" " + obj.bstate);
+
+    }
+}
+class AWT24
+{
+    public static void main(String [] args)
+    {
+        AWT24 a = new AWT24();
+    }
+
+}
+
